@@ -5,8 +5,8 @@ const { Server: IOServer } = require('socket.io')
 
 const app = express()
 
-const { options } = require('./options/config.js')
-const { optionsqlite } = require('./options/SQLite3.js')
+const { options } = require('./options/config')
+//const { optionsqlite } = require('./options/SQLite3.js')
 
 
 const httpServer = new HttpServer(app)
@@ -15,7 +15,7 @@ const io = new IOServer(httpServer)
 const PORT = 8082
 
 const ContainerMessages = require('./contenedores/containerMessages')
-const containerMsg = new ContainerMessages( 'messages', optionsqlite.sqlite )
+const containerMsg = new ContainerMessages( 'messages', options.sqlite )
 
 const ContainerProductsMysql = require('./contenedores/containerProductsMysql')
 const containerProduct = new ContainerProductsMysql( 'productos', options.mysql)

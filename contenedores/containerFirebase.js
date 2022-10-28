@@ -82,8 +82,8 @@ module.exports = class ContainerFirebase {
   async deleteProduct(id) {
     try {
       //let id = '2'
-      const queryUsuarios = query.doc(`${id}`);
-      const item = await queryUsuarios.delete();
+      const queryProductos = query.doc(`${id}`);
+      const item = await queryProductos.delete();
 
       console.log("El Producto ha sido eliminado", item);
     } catch (error) {

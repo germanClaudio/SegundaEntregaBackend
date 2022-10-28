@@ -23,14 +23,14 @@ module.exports = class ContainerMongoDB {
     //     }
     // }
 
-    
+
     async createProduct(product){
         try {
             const newProduct = new Productos(product)
             await newProduct.save()
             console.log('Product created: ', newProduct)
         } catch (error) {
-            console.log(error)
+            console.log("Error MongoDB createProduct: ",error)
         }
     }
 
@@ -39,7 +39,7 @@ module.exports = class ContainerMongoDB {
             const products = await Productos.find()
             console.log('Productos encontrados: ',products)
         } catch (error) {
-            console.log(error)
+            console.log("Error MongoDB getProducts: ",error)
         }
     }
 
@@ -48,7 +48,7 @@ module.exports = class ContainerMongoDB {
             await Productos.updateOne(  )  //{name: 'John'}, {$set: {name: 'Juan'}}
             console.log('Producto actualizado')
         } catch (error) {
-            console.log(error)
+            console.log("Error MongoDB updateProduct: ",error)
         }
     }
 
@@ -57,8 +57,7 @@ module.exports = class ContainerMongoDB {
             const productDeleted = await Productos.deleteOne(  )  //{name: 'Peter'}
             console.log('Producto eliminado: ' + JSON.stringify(productDeleted, null, 2))
         } catch (error) {
-            console.log(error)
+            console.log("Error MongoDB deleteProduct: ",error)
         }
     }
-    
 }

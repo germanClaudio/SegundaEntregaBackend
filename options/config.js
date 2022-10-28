@@ -38,7 +38,7 @@ const options = {
       } catch (error) {
         console.error("Error connection to DB: " + error);
       }
-    },
+    }
   },
 
   firebase: {
@@ -51,5 +51,5 @@ const options = {
 }
 
 module.exports = {
-  options,
-};
+  options
+}

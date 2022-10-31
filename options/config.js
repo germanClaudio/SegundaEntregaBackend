@@ -1,5 +1,5 @@
 //-----------------MONGO DB -----------
-const mongoose = require('mongoose'); //import mongoose from ('mongoose')
+const mongoose = require("mongoose"); //import mongoose from ('mongoose')
 
 //----------------firebase -----------
 let admin = require("firebase-admin");
@@ -13,8 +13,8 @@ const options = {
       port: 3306,
       user: "root",
       password: "",
-      database: "products",
-    },
+      database: "products"
+    }
   },
 
   sqlite: {
@@ -22,33 +22,36 @@ const options = {
     connection: {
       filename: "../DB/ecommerce.sqlite",
     },
-    useNullAsDefault: true,
+    useNullAsDefault: true
   },
 
   mongoDB: {
-    connect() {
-      try {
-        const URL =
-          "mongodb+srv://germanClaudio:germanclaudio@cluster0.oqkw9q9.mongodb.net/ecommerce?retryWrites=true&w=majority"; //mongodb://localhost:27017/ecommerce  127.0.0.1   mongodb+srv://germanClaudio:<password>@cluster0.oqkw9q9.mongodb.net/?retryWrites=true&w=majority
-        mongoose.connect(URL, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        });
-        console.log("Connected to MongoDB Server");
-      } catch (error) {
-        console.error("Error connection to DB: " + error);
+      "connection": {
+      connect() {
+        try {
+          const URL =
+            "mongodb+srv://germanClaudio:germanclaudio@cluster0.oqkw9q9.mongodb.net/ecommerce?retryWrites=true&w=majority" //mongodb://localhost:27017/ecommerce  127.0.0.1   mongodb+srv://germanClaudio:<password>@cluster0.oqkw9q9.mongodb.net/?retryWrites=true&w=majority
+          mongoose.connect(URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+          })
+          console.log("Connected to MongoDB Server")
+        } catch (error) {
+          console.error("Error connection to DB: " + error)
+        }
       }
     }
   },
 
   firebase: {
     connect() {
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
-          });
-    }
-  }
-}
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      })
+      console.log("Connected to FB")
+    },
+  },
+};
 
 module.exports = {
   options

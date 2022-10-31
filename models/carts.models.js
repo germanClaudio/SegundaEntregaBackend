@@ -3,22 +3,12 @@ import { Schema, model } from 'mongoose' //const { Schema, model } = require('mo
 const carritosCollection = 'Carritos'
 
 const CartSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-        maxlength: 100
-    },
-    price: {
-        type: Number,
+    timestamp: {
+        type: Date,
         required: true
     },
-    thumbnail: { 
-        type: String,
-        required: true,
-        maxlength: 250        
-    },
-    stock: { 
-        type: Number,
+    productos: {
+        type: Array,
         required: true
     }
 })

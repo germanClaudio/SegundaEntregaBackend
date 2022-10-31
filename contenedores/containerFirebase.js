@@ -9,7 +9,6 @@
 
 const { options } = require('../options/config.js')
 
-
 module.exports = class ContainerFirebase {
   constructor() {
     //this.connect()
@@ -31,7 +30,7 @@ module.exports = class ContainerFirebase {
       });
       console.log("Producto creado");
     } catch (error) {
-      Console.error("Error FB createProduct: ", error);
+      console.error("Error FB createProduct: ", error);
     }
   }
 

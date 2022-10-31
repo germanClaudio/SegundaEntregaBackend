@@ -1,6 +1,6 @@
 import ContainerMongoDB from '../../contenedores/containerMongoDB'
 
-import { connection } from ('../../options/config.js')
+import { connection } from '../../options/config.js'
 
 const connectionMongoDb = connection.mongoDB
 

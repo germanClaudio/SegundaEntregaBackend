@@ -1,4 +1,4 @@
-import { promises as fs } from "fs"; // const fs = require("fs");
+import { promises as fs } from "fs" // const fs = require("fs");
 
 module.exports = class ContainerArchivo {
   constructor(filePath) {

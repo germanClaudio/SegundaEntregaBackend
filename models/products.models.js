@@ -1,25 +1,42 @@
-import { Schema, model } from 'mongoose' //const { Schema, model } = require('mongoose')
+// const { Timestamp } = require('mongodb')
+const { Schema, model } = require('mongoose') //import { Schema, model } from 'mongoose' //const { Schema, model } = require('mongoose')
+let newDate = new Date()
 
 const productosCollection = 'Productos'
 
 const ProductSchema = new Schema({
-    title: {
+    timestamp: {
+        type: String,
+        default: newDate.toLocaleString(),
+    },
+    name : {
         type: String,
         required: true,
         maxlength: 100
+    },
+    description : {
+        type: String,
+        required: true,
+        maxlength: 200
     },
     price: {
         type: Number,
         required: true
     },
-    thumbnail: { 
+    picture: { 
         type: String,
         required: true,
         maxlength: 250        
     },
+    code: {
+        type: String,
+        required: true,
+        maxlength: 8 
+    },
     stock: { 
         type: Number,
-        required: true
+        required: true,
+        default: 1
     }
 })
 

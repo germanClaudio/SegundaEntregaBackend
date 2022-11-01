@@ -1,13 +1,16 @@
-const { options } = require('../options/config.js')
+const { options } = require('../options/config.js')  
 const knex = require('knex')(options.mysql)
 
-module.exports = class ContainerProductsMysql {
-    constructor(table, { configConnection }) {
+
+ module.exports = class ContainerProductsMysql {  
+    constructor(table, { configConnection } ) {
         this.table = table
+        // console.log('table name: ',table)
         this.knex = knex(configConnection)
+        //console.log('knex: ', configConnection)
     }
    
-    async getAllProds() {
+    async getAllProducts() {
         try {
             return await this.knex.from(this.table).select("*")
         } catch (error) {
@@ -15,9 +18,13 @@ module.exports = class ContainerProductsMysql {
         }
     }  
     
-    async saveProduct(addProduct) {
+    async createProduct(addProduct) {
+        const id = 0
         try {
-            return await this.knex(this.table).insert(addProduct)
+            const result = await this.knex('productos').insert( {id, ...addProduct } )
+            console.log('Producto agregado: ', { id, ...addProduct } )
+            return result
+            
         } catch (error) {
             return new Error(`Error saving product ${error}`)
         }                
@@ -31,7 +38,7 @@ module.exports = class ContainerProductsMysql {
         }
     }
 
-    async deleteById(id) {
+    async deleteProduct(id) {
         try {
             return await this.knex.from(this.table).where('id', "=", parseInt(id)).del()
         } catch (error) {
@@ -39,7 +46,7 @@ module.exports = class ContainerProductsMysql {
         }
     }
 
-    async updateById(id, producto) {
+    async updateProduct(id, producto) {
         try {
             return await this.knex.from(this.table).where('id', "=", parseInt(id)).update(producto)
         } catch (error) {

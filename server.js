@@ -1,21 +1,11 @@
 const express = require('express')
 const app = express()
-const router = require('./rutas/rutas')
+const router = require('./rutas/rutas.js')
 
 const PORT = process.env.PORT || 8082
 
 // const ContainerMessages = require('./contenedores/containerMessages')
 // const containerMsg = new ContainerMessages( 'messages', options.sqlite )
-
-// const ContainerProductsMysql = require('./contenedores/containerProductsMysql')
-// const containerProduct = new ContainerProductsMysql( 'productos', options.mysql)
-
-//FIREBASE
-// const containerFirebase = require('./contenedores/containerFirebase')
-// const containerProduct = new containerFirebase('productos', options.firebase)
-//console.log('containerProduct: ', containerProduct.getAllProducts())
-
-
 
 //app.use(express.static('public'))
 //app.use(express.static('src/images'))

@@ -5,20 +5,48 @@ Content-type: application/json
 Authorization: Basic trusted:secret  
 
 {
-    "name": "Perfume Champions II",
-    "description": "Marca Carol Fair - 90ml",
+    "name": "Perfume Chacarita",
+    "description": "Marca Verde - 90ml",
     "price": 99,
-    "picture": "http://localhost:8082/Perfume_4.jpg",
-    "code": "AA231",
-    "stock": 9
+    "picture": "http://localhost:8082/Perfume_2.jpg",
+    "code": "AP456",
+    "stock": 33
 }
 
-### GET 
+### POST MYSQL
+POST http://localhost:8082/api/productos/ HTTP/1.1
+Content-type: application/json
+Authorization: Basic trusted:secret  
+
+{   
+    "id": 1,
+    "name": "Perfume Chacarita",
+    "description": "Marca Verde - 90ml",
+    "price": 77,
+    "picture": "http://localhost:8082/Perfume_2.jpg",
+    "code": "AP789",
+    "stock": 22
+}
+
+### GET ALL  MONGODB & FB
+GET http://localhost:8082/api/productos/ HTTP/1.1
+Content-Type: application/json
+
+### GET MONGODB
 GET http://localhost:8082/api/productos/635fd425d284f5279602c78d HTTP/1.1
 Content-Type: application/json
 
 
-### PUT ----> UPDATE
+### GET FB
+GET http://localhost:8082/api/productos/LwTFlzC8rBdmIlXw8wYa HTTP/1.1
+Content-Type: application/json
+
+### GET FILE .JSON
+GET http://localhost:8082/api/productos/12 HTTP/1.1
+Content-Type: application/json
+
+
+### PUT ----> UPDATE MONGODB
 PUT http://localhost:8082/api/productos/635fdeb40ffab2b774b9d34a HTTP/1.1
 Content-Type: application/json
 
@@ -31,7 +59,31 @@ Content-Type: application/json
         "stock": 29 
 }
 
-### DELETE
+### PUT ----> UPDATE FIREBASE
+PUT http://localhost:8082/api/productos/ZbCwlJZaEEqkr9N70IyZ HTTP/1.1
+Content-Type: application/json
+
+{
+        "name": "Perfume Perejil Picado",
+        "description": "Marca Verdu - 90ml",
+        "price": 111,
+        "picture": "http://localhost:8082/Perfume_5.jpg",
+        "code": "AB333",
+        "stock": 11 
+}
+
+### DELETE   MONGODB
 DELETE http://localhost:8082/api/productos/635fd425d284f5279602c794 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+
+### DELETE   FIREBASE
+DELETE http://localhost:8082/api/productos/gRg23sqi45QKafqpc9aa HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+### DELETE   MYSQL
+DELETE http://localhost:8082/api/productos/10 HTTP/1.1
 Content-Type: application/json
 Authorization: Basic trusted:secret

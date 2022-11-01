@@ -98,5 +98,25 @@
     "picture": "http://localhost:8082/Perfume_6.jpg",
     "code": "AP123",
     "stock": 12
+  },
+  {
+    "id": 11,
+    "timestamp": "01/11/2022, 09:34:34",
+    "name": "Perfume Perejil",
+    "description": "Marca Verdum - 50ml",
+    "price": 175,
+    "picture": "http://localhost:8082/Perfume_6.jpg",
+    "code": "AP123",
+    "stock": 12
+  },
+  {
+    "id": 12,
+    "timestamp": "01/11/2022, 09:37:40",
+    "name": "Perfume Chacarita",
+    "description": "Marca Verde - 90ml",
+    "price": 99,
+    "picture": "http://localhost:8082/Perfume_2.jpg",
+    "code": "AP456",
+    "stock": 33
   }
 ]

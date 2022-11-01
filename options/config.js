@@ -3,7 +3,7 @@
 
 //----------------firebase -----------
 // let admin = require("firebase-admin");
-let serviceAccount = require("../options/comision32125-backend-firebase-adminsdk-lhyej-0e32c2b4a8.json");
+let serviceAccount = require("./comision32125-backend-firebase-adminsdk-lhyej-0e32c2b4a8.json")
 
 const options = {
   mysql: {

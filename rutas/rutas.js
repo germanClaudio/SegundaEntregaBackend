@@ -3,21 +3,29 @@ const router = express.Router();
 
 const { options } = require('../options/config')
 
-//const dataBaseSelected = 'mongoDB' //firebase
-
 //MONGO_DB
-const containerMongoDB = require('../contenedores/containerMongoDB')
-const containerProduct = new containerMongoDB('productos', options.mongoDB)
+// const containerMongoDB = require('../contenedores/containerMongoDB')
+// const containerProduct = new containerMongoDB('productos', options.mongoDB)
 
-const containerFirebase = require('../contenedores/containerMongoDB')
-//const containerProduct = new containerFirebase('productos', options.firebase)
+//FIREBASE
+// const containerFirebase = require('../contenedores/containerFirebase')
+// const containerProduct = new containerFirebase('productos', options.firebase)
+
+//FILE .JSON
+// const ContainerArchivo = require('../contenedores/containerArchivo')
+// const containerProduct = new ContainerArchivo('./DB/productos.json')
+
+//MYSQL
+const ContainerProductsMysql = require('../contenedores/containerProductsMysql.js')
+const containerProduct = new ContainerProductsMysql( 'productos', options.mysql )
+// console.log('connection', containerProduct)
 
 //--------Router GET ALL ---------
 router.get('/', async (req, res) => {
     try {
         const productos = await containerProduct.getAllProducts()
-        console.log('getAllProducts: '+ JSON.stringify(productos, null, 2))
-        if (productos){
+        //console.log('getAllProducts: '+ JSON.stringify(productos, null, 2))
+        if (productos !== {} ){
             res.status(200).json( { data: productos } )
             //res.render('index' , { productos, getAllMsgDB } )
         } else {
@@ -25,18 +33,16 @@ router.get('/', async (req, res) => {
         }
     } catch (error) {
         res.status(400).json({msg: 'No products availables' })
-        
     }
-     
 })
 
 //--------Router GET BY ID ---------
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    console.log('id ', id)
+    //console.log('id ', id)
     try {
-        const productos = await containerProduct.getById(req.params.id)
-        console.log('Producto: '+ productos)
+        const productos = await containerProduct.getById(Number(id))
+        //console.log('Producto: '+ productos)
         if (productos){
             res.status(200).json( { data: productos })
         } else {
@@ -49,7 +55,7 @@ router.get('/:id', async (req, res) => {
 
 //--------Router POST ---------
 router.post("/", async (req, res) => {
-    console.log('Post: ' + req.body)
+    console.log('Post: ' + JSON.stringify(req.body, null, 2))
     const today = new Date()
     const timestamp = today.toLocaleString('en-GB')
 
@@ -65,7 +71,6 @@ router.post("/", async (req, res) => {
     try {
         await containerProduct.createProduct(addProduct)
         res.json(addProduct)
-        
     } catch (error) {
         
     }
@@ -74,9 +79,9 @@ router.post("/", async (req, res) => {
 //--------Router DELETE ---------
 router.delete('/:id', async (req, res) => {
     const id = req.params.id
-    console.log('ID: ', id)
+    //console.log('ID: ', id)
     try {
-        const product = await containerProduct.deleteProduct(req.params.id)
+        const product = await containerProduct.deleteProduct(id)
         if (product){
             res.status(200).json({data: 'Product Deleted: ', product })
         } else {
@@ -97,7 +102,7 @@ router.put('/:id', async (req, res) => {
     
     try {
         const productUpdated = await containerProduct.updateProduct(id, dataBody, timestamp)
-        if (productUpdated){
+        if (productUpdated !== null){
             res.status(200).json({data: 'Product Updated: ', productUpdated })
         } else {
             res.status(200).json({Msg: 'No product founded to update with the ID given'  })

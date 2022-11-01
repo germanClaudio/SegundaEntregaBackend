@@ -1,4 +1,4 @@
-import { promises as fs } from "fs" // const fs = require("fs");
+const fs = require("fs")
 
 module.exports = class ContainerArchivo {
   constructor(filePath) {
@@ -21,6 +21,7 @@ module.exports = class ContainerArchivo {
     const product = fileContent.filter((item) => item.id === id);
     if (product.length > 0) {
       console.log("Producto encontrado: " + JSON.stringify(product, true, 2));
+      return product
     } else {
       console.log(
         "Lo sentimos, el Id del producto ingresado no existe en nuestra Base de Datos!!"
@@ -28,18 +29,19 @@ module.exports = class ContainerArchivo {
     }
   }
 
-  async getAll() {
+  async getAllProducts() {
     const fileContent = await this.#readFile();
     if (fileContent.length > 0) {
       console.log(
         "Lista de Productos \n" + JSON.stringify(fileContent, null, 2)
       );
+      return fileContent
     } else {
       console.log("Lo sentimos, la lista de Productos está vacía!!!");
     }
   }
 
-  async save(obj) {
+  async createProduct(obj) {
     const fileContent = await this.#readFile();
 
     if (fileContent.length !== 0) {
@@ -54,8 +56,9 @@ module.exports = class ContainerArchivo {
             null,
             2
           )
-        );
-        console.log("Producto guardado con exito en Base de Datos!");
+        )
+        console.log("Producto guardado con exito en Base de Datos! ", fileContent);
+        return fileContent
       } catch (error) {
         console.log("Error al escribir en archivo!! \n" + error);
       }
@@ -73,7 +76,7 @@ module.exports = class ContainerArchivo {
     }
   }
 
-  async deleteById(id) {
+  async deleteProduct(id) {
     const fileContent = await this.#readFile();
 
     const nonDeletedProducts = fileContent.filter((item) => item.id !== id);
@@ -102,32 +105,24 @@ module.exports = class ContainerArchivo {
     }
   }
 
-  async deleteAll() {
-    const fileContent = await this.#readFile();
+  // async deleteAll() {
+  //   const fileContent = await this.#readFile();
 
-    if (fileContent.length > 0) {
-      try {
-        await fs.promises.writeFile(
-          this.filePath,
-          JSON.stringify([], null, 2),
-          "utf-8"
-        );
-        console.log(
-          "Todos los productos han sido Eliminados de la Base de Datos!!!"
-        );
-      } catch (error) {
-        console.log("Error al escribir en archivo!! \n" + error);
-      }
-    } else {
-      console.log("La Base de Datos está vacía!!!");
-    }
-  }
-};
-
-// const container = new Container('../productos.json')
-/* --- PARA PROBAR LOS MODULOS, DESCOMENTAR LAS LINEAS container.getAll(), container.getById(), container.deleteById(), container.deleteAll() O container.save({}) ---*/
-//container.save({title: "Perfume Secret", price: 16500, thumbnail: "https://media.glamour.es/photos/616f93e77a09840b79f4bd0a/master/w_2953,h_4134,c_limit/619390.jpg"})
-//container.getAll()
-// container.getById(10)
-//container.deleteById(3)
-//container.deleteAll()
+  //   if (fileContent.length > 0) {
+  //     try {
+  //       await fs.promises.writeFile(
+  //         this.filePath,
+  //         JSON.stringify([], null, 2),
+  //         "utf-8"
+  //       );
+  //       console.log(
+  //         "Todos los productos han sido Eliminados de la Base de Datos!!!"
+  //       );
+  //     } catch (error) {
+  //       console.log("Error al escribir en archivo!! \n" + error);
+  //     }
+  //   } else {
+  //     console.log("La Base de Datos está vacía!!!");
+  //   }
+  // }
+}

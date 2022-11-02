@@ -17,8 +17,8 @@ module.exports = class ContainerArchivo {
 
   async getById(id) {
     const fileContent = await this.#readFile();
-
     const product = fileContent.filter((item) => item.id === id);
+
     if (product.length > 0) {
       console.log("Producto encontrado: " + JSON.stringify(product, true, 2));
       return product

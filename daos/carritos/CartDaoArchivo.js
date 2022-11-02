@@ -3,9 +3,13 @@ const fs = require("fs")
 module.exports = class ContainerCart {
     constructor(myFile) {
         this.myFile = myFile
+    }
+
+    async #readFile() {    
         try {
-            this.carts = fs.readFileSync(this.myFile, 'utf-8')
-            this.carts = JSON.parse(this.carts)
+            this.carts = await fs.promises.readFile(this.myFile, 'utf-8')
+            const contentParsed = JSON.parse(this.carts);
+            return contentParsed;
         }
         catch (error) {
             const today = new Date()
@@ -17,9 +21,21 @@ module.exports = class ContainerCart {
             }
         }
     }
-        
-    saveCart(addCart) {
-        const fileContent = this.carts
+    
+    async getAllCarts() {
+        const fileContent = await this.#readFile();
+        if (fileContent.length > 0) {
+            console.log(
+              "Lista de Carts: \n" + JSON.stringify(fileContent, null, 2)
+            );
+            return fileContent
+          } else {
+            console.log("Lo sentimos, la lista de Carritos está vacía!!!");
+          }
+    }
+    
+    async saveCart(addCart) {
+        const fileContent = await this.#readFile();
         //console.log('FileContent: '+ fileContent)
         if (addCart !== undefined && fileContent !== undefined) {
             const cartToSave = JSON.stringify([...fileContent, { id_Cart: fileContent[fileContent.length - 1].id_Cart + 1 , ...addCart}], null, 2)
@@ -37,8 +53,8 @@ module.exports = class ContainerCart {
     }
     
 
-    deleteById(id_Cart) {
-            const fileContent = this.carts
+    async deleteById(id_Cart) {
+            const fileContent = await this.#readFile();
             const nonDeletedCarts = fileContent.filter(item => item.id_Cart !== parseInt(id_Cart))
             const cartToBeDeleted = fileContent.filter(item => item.id_Cart === parseInt(id_Cart))
             //console.log('cartToBe deleted: '+ JSON.stringify(cartToBeDeleted))
@@ -60,35 +76,29 @@ module.exports = class ContainerCart {
         }
 
 
-    getCartById(id_Cart) {
-            const fileContent = this.carts
-            const cart = fileContent.find(cart => cart.id_Cart === parseInt(id_Cart))
+    async getCartById(id_Cart) {
+            const fileContent = await this.#readFile();
+            const cart = fileContent.filter((cart) => cart.id_Cart === Number(id_Cart))
             
-            if (cart) {
+            if (cart.length > 0) {
+                console.log("Carrito encontrado: " + JSON.stringify(cart, true, 2));
                 return cart
             } else {
-                return { Error: `We could not find the Cart with the id#${id_Cart}` }
+                return { Error: `We could not find the Cart with the Id# ${id_Cart}` }
             }
     }
 
 
-    updateCart(id_Cart, producToAdd) {
-            const fileContent = this.carts
+    async updateCart(id_Cart, producToAdd) {
+            const fileContent = await this.#readFile();
             const cartId = fileContent.find(item => item.id_Cart === Number(id_Cart))
             
-            // console.log('4-ID: '+id_Cart)
-            // console.log('5-cartId (updateCArt): '+ JSON.stringify(cartId, null, 2))
-
             if ( cartId.id_Cart !== undefined && cartId.id_Cart > 0 || cartId !== {} ) {
                 const nonUpdatedCarts = fileContent.filter(item => item.id_Cart !== parseInt(id_Cart))
                 const updatedCart = { id_Cart: Number(id_Cart), timestamp: producToAdd.timestamp , productos: [...cartId.productos, producToAdd] }
                 
-                // console.log('6-CartUpdated: '+ JSON.stringify(updatedCart))
-                
                 let array = [updatedCart, ...nonUpdatedCarts]
-                let arrayOrdered = array.sort((a,b) => { return a.id - b.id })
-                
-                // console.log('7-Array ordered: '+JSON.stringify(arrayOrdered))
+                let arrayOrdered = array.sort((a,b) => { return a.id_Cart - b.id_Cart })
                 
                 try {
                     this.carts = fs.writeFileSync(this.myFile, JSON.stringify(arrayOrdered))

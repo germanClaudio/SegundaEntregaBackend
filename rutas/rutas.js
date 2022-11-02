@@ -12,13 +12,13 @@ const { options } = require('../options/config')
 // const containerProduct = new containerFirebase('productos', options.firebase)
 
 //FILE .JSON
-// const ContainerArchivo = require('../contenedores/containerArchivo')
-// const containerProduct = new ContainerArchivo('./DB/productos.json')
+const ContainerArchivo = require('../contenedores/containerArchivo')
+const containerProduct = new ContainerArchivo('./DB/productos.json')
 
 //MYSQL
-const ContainerProductsMysql = require('../contenedores/containerProductsMysql.js')
-const containerProduct = new ContainerProductsMysql( 'productos', options.mysql )
-// console.log('connection', containerProduct)
+// const ContainerProductsMysql = require('../contenedores/containerProductsMysql.js')
+// const containerProduct = new ContainerProductsMysql( 'productos', options.mysql )
+
 
 //--------Router GET ALL ---------
 router.get('/', async (req, res) => {
@@ -72,7 +72,7 @@ router.post("/", async (req, res) => {
         await containerProduct.createProduct(addProduct)
         res.json(addProduct)
     } catch (error) {
-        
+        res.status(400).json({msg: 'Error! The product was not added!!' })
     }
 })
 

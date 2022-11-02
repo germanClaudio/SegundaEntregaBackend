@@ -4,9 +4,6 @@ const router = require('./rutas/rutas.js')
 const routerCart = require('./rutas/rutasCart')
 const PORT = process.env.PORT || 8082
 
-// const ContainerMessages = require('./contenedores/containerMessages')
-// const containerMsg = new ContainerMessages( 'messages', options.sqlite )
-
 //app.use(express.static('public'))
 //app.use(express.static('src/images'))
 app.use(express.json())

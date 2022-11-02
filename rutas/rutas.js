@@ -4,30 +4,29 @@ const router = express.Router();
 const { options } = require('../options/config')
 
 //MONGO_DB
-// const containerMongoDB = require('../contenedores/containerMongoDB')
+// const containerMongoDB = require('../daos/productos/ProductosDaoMongoDB') //../contenedores/containerMongoDB
 // const containerProduct = new containerMongoDB('productos', options.mongoDB)
 
 //FIREBASE
-// const containerFirebase = require('../contenedores/containerFirebase')
+// const containerFirebase = require('../daos/productos/ProductosDaoFirebase')  //../contenedores/containerFirebase
 // const containerProduct = new containerFirebase('productos', options.firebase)
 
 //FILE .JSON
-const ContainerArchivo = require('../contenedores/containerArchivo')
-const containerProduct = new ContainerArchivo('./DB/productos.json')
+// const ContainerArchivo = require('../daos/productos/ProductosDaoArchivo') //../contenedores/containerArchivo
+// const containerProduct = new ContainerArchivo('./DB/productos.json')
 
 //MYSQL
-// const ContainerProductsMysql = require('../contenedores/containerProductsMysql.js')
-// const containerProduct = new ContainerProductsMysql( 'productos', options.mysql )
+const ContainerMysql = require('../daos/productos/ProductosDaoMysql.js') //../contenedores/containerProductsMysql.js
+const containerProduct = new ContainerMysql( 'productos', options.mysql )
 
 
 //--------Router GET ALL ---------
 router.get('/', async (req, res) => {
     try {
         const productos = await containerProduct.getAllProducts()
-        //console.log('getAllProducts: '+ JSON.stringify(productos, null, 2))
+        
         if (productos !== {} ){
             res.status(200).json( { data: productos } )
-            //res.render('index' , { productos, getAllMsgDB } )
         } else {
             res.status(200).json({Msg: 'No products founded' })
         }
@@ -41,7 +40,7 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id
     //console.log('id ', id)
     try {
-        const productos = await containerProduct.getById(Number(id))
+        const productos = await containerProduct.getById(id)
         //console.log('Producto: '+ productos)
         if (productos){
             res.status(200).json( { data: productos })

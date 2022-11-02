@@ -60,7 +60,7 @@ routerCart.get('/:id_Cart', async (req, res) => {
     console.log('--- params: ' + id_Cart)
     
     try {
-        const getCart = await containerCart.getCartById(Number(id_Cart))
+        const getCart = await containerCart.getCartById(id_Cart)
         console.log('---- getCart: ' + JSON.stringify(getCart, null, 2));
         
         if (getCart) {
@@ -76,7 +76,7 @@ routerCart.get('/:id_Cart', async (req, res) => {
 routerCart.get('/:id_Cart/productos', (req, res) => {
     const { id_Cart } = req.params
     console.log('params: ' + JSON.stringify(id_Cart))
-    const getCart = containerCart.getCartById(Number(id_Cart))
+    const getCart = containerCart.getCartById(id_Cart)
 
     if (id_Cart !== undefined) {
         res.json({ Error: 'Upps! You do not have permissions to see this!' })

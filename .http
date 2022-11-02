@@ -19,13 +19,13 @@ Content-type: application/json
 Authorization: Basic trusted:secret  
 
 {   
-    "id": 1,
-    "name": "Perfume Chacarita",
-    "description": "Marca Verde - 90ml",
-    "price": 77,
-    "picture": "http://localhost:8082/Perfume_2.jpg",
-    "code": "AP789",
-    "stock": 22
+    "id": 0,
+    "name": "Perfume Colon Sta. Fe",
+    "description": "Marca Rojo-Negro - 90ml",
+    "price": 54,
+    "picture": "http://localhost:8082/Perfume_6.jpg",
+    "code": "CS123",
+    "stock": 14
 }
 
 ### GET ALL  MONGODB & FB
@@ -60,31 +60,45 @@ Content-Type: application/json
 }
 
 ### PUT ----> UPDATE FIREBASE
-PUT http://localhost:8082/api/productos/ZbCwlJZaEEqkr9N70IyZ HTTP/1.1
+PUT http://localhost:8082/api/productos/LwTFlzC8rBdmIlXw8wYa HTTP/1.1
 Content-Type: application/json
 
 {
         "name": "Perfume Perejil Picado",
-        "description": "Marca Verdu - 90ml",
-        "price": 111,
+        "description": "Marca Te fuiste - 90ml",
+        "price": 98,
         "picture": "http://localhost:8082/Perfume_5.jpg",
-        "code": "AB333",
-        "stock": 11 
+        "code": "AF852",
+        "stock": 7 
 }
 
+### PUT ----> UPDATE MYSQL
+PUT http://localhost:8082/api/productos/7 HTTP/1.1
+Content-Type: application/json
+
+{
+        "name": "Perfume Marca Cañon #3",
+        "description": "Marca estoy - 60ml",
+        "price": 98,
+        "picture": "http://localhost:8082/Perfume_5.jpg",
+        "code": "AJ022",
+        "stock": 16 
+}
+
+
 ### DELETE   MONGODB
-DELETE http://localhost:8082/api/productos/635fd425d284f5279602c794 HTTP/1.1
+DELETE http://localhost:8082/api/productos/635fd425d284f5279602c795 HTTP/1.1
 Content-Type: application/json
 Authorization: Basic trusted:secret
 
 
 ### DELETE   FIREBASE
-DELETE http://localhost:8082/api/productos/gRg23sqi45QKafqpc9aa HTTP/1.1
+DELETE http://localhost:8082/api/productos/LwTFlzC8rBdmIlXw8wYa HTTP/1.1
 Content-Type: application/json
 Authorization: Basic trusted:secret
 
 ### DELETE   MYSQL
-DELETE http://localhost:8082/api/productos/10 HTTP/1.1
+DELETE http://localhost:8082/api/productos/9 HTTP/1.1
 Content-Type: application/json
 Authorization: Basic trusted:secret
 

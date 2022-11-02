@@ -96,5 +96,5 @@ class ProductosDaoFirebase extends ContainerFirebase {
     }
 }
 
-module.exports = ProductosDaoFirebase;
+module.exports = ProductosDaoFirebase
 //export default ProductosDaoFirebase

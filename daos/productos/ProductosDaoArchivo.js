@@ -1,22 +1,8 @@
-const ContainerArchivo = require('../../contenedores/containerArchivo')
+const ContainerArchivo = require("../../contenedores/containerArchivo");
 
 class ProductosDaoArchivo extends ContainerArchivo {
-    constructor() {
-        super('DB/productos.json')
-    }
-
-  async getById(id) {
-    const fileContent = await this.readFile();
-    const product = fileContent.filter((item) => item.id === id);
-
-    if (product.length > 0) {
-      console.log("Producto encontrado: " + JSON.stringify(product, true, 2));
-      return product
-    } else {
-      console.log(
-        "Lo sentimos, el Id del producto ingresado no existe en nuestra Base de Datos!!"
-      );
-    }
+  constructor() {
+    super("DB/productos.json");
   }
 
   async getAllProducts() {
@@ -25,9 +11,23 @@ class ProductosDaoArchivo extends ContainerArchivo {
       console.log(
         "Lista de Productos \n" + JSON.stringify(fileContent, null, 2)
       );
-      return fileContent
+      return fileContent;
     } else {
       console.log("Lo sentimos, la lista de Productos está vacía!!!");
+    }
+  }
+
+  async getById(id) {
+    const fileContent = await this.readFile();
+    const product = fileContent.filter((item) => item.id === id);
+
+    if (product.length > 0) {
+      console.log("Producto encontrado: " + JSON.stringify(product, true, 2));
+      return product;
+    } else {
+      console.log(
+        "Lo sentimos, el Id del producto ingresado no existe en nuestra Base de Datos!!"
+      );
     }
   }
 
@@ -46,9 +46,12 @@ class ProductosDaoArchivo extends ContainerArchivo {
             null,
             2
           )
-        )
-        console.log("Producto guardado con exito en Base de Datos! ", fileContent);
-        return fileContent
+        );
+        console.log(
+          "Producto guardado con exito en Base de Datos! ",
+          fileContent
+        );
+        return fileContent;
       } catch (error) {
         console.log("Error al escribir en archivo!! \n" + error);
       }
@@ -115,10 +118,9 @@ class ProductosDaoArchivo extends ContainerArchivo {
       console.log("La Base de Datos está vacía!!!");
     }
   }
-//----------------------------------------------------------------
+  //----------------------------------------------------------------
 
-    async desconectar() {
-    }
+  async desconectar() {}
 }
 
 module.exports = ProductosDaoArchivo;

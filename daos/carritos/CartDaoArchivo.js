@@ -1,29 +1,13 @@
 const fs = require("fs")
+const ContainerArchivo = require("../../contenedores/containerArchivo")
 
-module.exports = class ContainerCart {
-    constructor(myFile) {
-        this.myFile = myFile
+module.exports = class ContainerDaoArchivo extends ContainerArchivo {
+    constructor() {
+        super('DB/carritos.json')
     }
 
-    async #readFile() {    
-        try {
-            this.carts = await fs.promises.readFile(this.myFile, 'utf-8')
-            const contentParsed = JSON.parse(this.carts);
-            return contentParsed;
-        }
-        catch (error) {
-            const today = new Date()
-            const timestamp = today.toLocaleString('en-GB')
-            this.carts = {
-                "id_Cart": 1,
-                "timestampCart": timestamp,
-                "productos": []
-            }
-        }
-    }
-    
     async getAllCarts() {
-        const fileContent = await this.#readFile();
+        const fileContent = await this.readFile();
         if (fileContent.length > 0) {
             console.log(
               "Lista de Carts: \n" + JSON.stringify(fileContent, null, 2)
@@ -35,7 +19,7 @@ module.exports = class ContainerCart {
     }
     
     async saveCart(addCart) {
-        const fileContent = await this.#readFile();
+        const fileContent = await this.readFile();
         //console.log('FileContent: '+ fileContent)
         if (addCart !== undefined && fileContent !== undefined) {
             const cartToSave = JSON.stringify([...fileContent, { id_Cart: fileContent[fileContent.length - 1].id_Cart + 1 , ...addCart}], null, 2)
@@ -54,7 +38,7 @@ module.exports = class ContainerCart {
     
 
     async deleteById(id_Cart) {
-            const fileContent = await this.#readFile();
+            const fileContent = await this.readFile();
             const nonDeletedCarts = fileContent.filter(item => item.id_Cart !== parseInt(id_Cart))
             const cartToBeDeleted = fileContent.filter(item => item.id_Cart === parseInt(id_Cart))
             //console.log('cartToBe deleted: '+ JSON.stringify(cartToBeDeleted))
@@ -77,7 +61,7 @@ module.exports = class ContainerCart {
 
 
     async getCartById(id_Cart) {
-            const fileContent = await this.#readFile();
+            const fileContent = await this.readFile();
             const cart = fileContent.filter((cart) => cart.id_Cart === Number(id_Cart))
             
             if (cart.length > 0) {
@@ -90,7 +74,7 @@ module.exports = class ContainerCart {
 
 
     async updateCart(id_Cart, producToAdd) {
-            const fileContent = await this.#readFile();
+            const fileContent = await this.readFile();
             const cartId = fileContent.find(item => item.id_Cart === Number(id_Cart))
             
             if ( cartId.id_Cart !== undefined && cartId.id_Cart > 0 || cartId !== {} ) {

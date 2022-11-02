@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose') //import { Schema, model } from 'mongoose' //const { Schema, model } = require('mongoose')
+const { Schema, model } = require('mongoose')
 let newDate = new Date()
 
 const productosCollection = 'Productos'

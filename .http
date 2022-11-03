@@ -159,6 +159,12 @@ DELETE http://localhost:8082/api/carritos/f6E3FcV0BEdlp3cAWrxq/productos/2 HTTP/
 Content-Type: application/json
 Authorization: Basic trusted:secret
 
+### DELETE ONE PRODUCT OF THE CART MONGO --- Not working
+DELETE http://localhost:8082/api/carritos/636406cb0dfdb1df4f88b1de/productos/9 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+
 ### EMPTY CART FIREBASE
 DELETE http://localhost:8082/api/carritos/oAMZlxN5e20zvJHcMvAc/productos HTTP/1.1
 Content-Type: application/json

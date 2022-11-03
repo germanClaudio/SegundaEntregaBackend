@@ -39,8 +39,9 @@ class CartDaoMongoDB extends ContainerMongoDB {
         }
     }
 
-    async updateCart(id, dataBody, timestamp){
-        console.log('id: ', id, ' - dataBody: ', dataBody, ' - timestamp: ', timestamp)
+    // add a product to the cart ---------------
+    async updateCart(id, dataBody, timestamp) {
+        //console.log('id: ', id, ' - dataBody: ', dataBody, ' - timestamp: ', timestamp)
         try {
             const newValues = {
                  productos: dataBody
@@ -57,7 +58,7 @@ class CartDaoMongoDB extends ContainerMongoDB {
 
     async deleteCartById(id){
         try {
-            const cartDeleted = await Carts.deleteOne({ "_id": `${id}` })  //{name: 'Peter'}
+            const cartDeleted = await Carts.deleteOne({ "_id": `${id}` })
             console.log('Carrito eliminado: ' + JSON.stringify(cartDeleted, null, 2))
             return cartDeleted
         } catch (error) {
@@ -65,13 +66,25 @@ class CartDaoMongoDB extends ContainerMongoDB {
         }
     }
 
+    async removeProductById(id_Cart, id, timestamp){
+
+        try {
+            const cartDeleted = await Carts.updateOne({ "_id": id_Cart}, { $pull: {'productos': { $eq: id }} } ) 
+            console.log('Producto id# ', id ,', eliminado del carrito: ' + JSON.stringify(cartDeleted, null, 2))
+            return cartDeleted
+        } catch (error) {
+            console.log("Error MongoDB deleteCart: ",error)
+        }
+    }
+
+    
 
     async emptyCart(id){
         const products = {
             productos: []
         }
         try {
-            const cartEmptied = await Carts.updateOne({ _id: id}, products )  //{name: 'Peter'}
+            const cartEmptied = await Carts.updateOne({ _id: id}, products )
 
             console.log('Carrito Vaciado: ' + JSON.stringify(cartEmptied, null, 2))
             return cartEmptied

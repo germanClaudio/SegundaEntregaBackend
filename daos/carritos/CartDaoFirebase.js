@@ -1,8 +1,6 @@
 const ContainerFirebase = require('../../contenedores/containerFirebase')
 const { options } = require('../../options/config.js')
 
-const formato = require('../../models/carts.models')
-
 const db = options.firebase.connection.admin.firestore();
 const query = db.collection("carritos");
 
@@ -34,7 +32,7 @@ class CartDaoFirebase extends ContainerFirebase {
         id: res.id,
         ...res.data(),
       }));
-	  console.log("Carritos: ", response);
+	  //console.log("Carritos: ", response);
 	  return response
     } catch (error) {
       console.error("Error FB getCarts: ", error);
@@ -44,8 +42,7 @@ class CartDaoFirebase extends ContainerFirebase {
   //leer 1 carrito --------------------
   async getById(id) {
     try {
-    	//let id = "2";
-      	const queryCarrito = query.doc(id)
+    		const queryCarrito = query.doc(id)
       	const item = await queryCarrito.get()
       	const respuesta = item.data()
       	console.log("Carrito encontrado: ", respuesta)
@@ -55,50 +52,60 @@ class CartDaoFirebase extends ContainerFirebase {
     }
   }
 
-  //  Insert 1 Product into the Cart----------------------
+  //  Insert 1 Product into the Cart-------------
   async updateCart(id, dataBody, timestamp) {
-    console.log('databody: ',dataBody);
+    //console.log('databody: ',dataBody);
     try {
-      //let id = '1'
-      console.log('formato ', formato)
       const queryCarrito = query.doc(id);
-      const item = await queryCarrito.get()
-      const respuesta = item.data()
       const itemInsert = await queryCarrito.update( {
-        productos:  {...respuesta}, dataBody,
-        // productos: dataBody,
-        timestamp: timestamp,
-		
-	  } ); //{ edad: 50 }
-      console.log("El Carrito ha sido actualizado", itemInsert);
+        productos:  options.firebase.connection.admin.firestore.FieldValue.arrayUnion(dataBody),
+        timestamp: timestamp
+    } );
+      console.log("Se ha agregado al Carrito un producto id#: ", id);
       return itemInsert;
     } catch (error) {
       console.error("Error FB updateProduct: ", error);
     }
   }
 
-  //  Delete One Product ----------------------
-  async deleteCartById(id) {
+  //  Delete One Product ----- Is not working.......
+  async removeProductById(id_Cart, id, timestamp) {
+    console.log('id_Cart: ', id_Cart, 'id: ', id, 'timestamp: ', timestamp);
     try {
-      //let id = '2'
-      const queryCarritos = query.doc(`${id}`);
-      const item = await queryCarritos.delete();
-      console.log("El Carrito ha sido eliminado", item);
-		return item
+      const queryCarrito = query.doc(id_Cart)
+      
+      const item = await queryCarrito.update( {
+        productos: options.firebase.connection.admin.firestore.FieldValue.arrayRemove('productos'),  
+      }, {merge: true});
+      console.log(`El producto Id: ${id}, se ha eliminado del Carrito`, item)
+      return queryCarrito
     } catch (error) {
       console.error("Error FB DeleteCart: ", error);
     }
   }
 
+  //   Empty the cart (delete all products from cart) --------------
   async emptyCart(id, timestamp) {
     try {
-      //let id = '1'
-      const queryCarrito = query.doc(`${id}`);
+      const queryCarrito = query.doc(id);
       const item = await queryCarrito.update( {
-		timestamp: timestamp,
-		productos: []
-	  } ); //{ edad: 50 }
-      console.log("El Carrito ha sido actualizado", item);
+        timestamp: timestamp,
+        productos:  options.firebase.connection.admin.firestore.FieldValue.delete() 
+	    }, {merge: true} );
+      console.log("El Carrito se ha vaciado de productos", item);
+      return queryCarrito
+    } catch (error) {
+      console.error("Error FB updateProduct: ", error);
+    }
+  }
+
+  //   Delete the cart --------------
+  async deleteCartById(id) {
+    try {
+      const queryCarrito = query.doc(id);
+      const item = await queryCarrito.delete() 
+      console.log("El Carrito se sido eliminado completamente", item);
+      return item
     } catch (error) {
       console.error("Error FB updateProduct: ", error);
     }

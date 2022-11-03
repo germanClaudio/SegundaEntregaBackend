@@ -117,19 +117,19 @@ Authorization: Basic trusted:secret
 }
 
 ### POST
-POST http://localhost:8082/api/carritos/dpnkqFXRrv1TPoIYvzl/productos HTTP/1.1
+POST http://localhost:8082/api/carritos/636410c5020b43cb2d889844/productos HTTP/1.1
 Content-type: application/json
 Authorization: Basic trusted:secret  
 
 {
-    "id": 7,
-    "timestamp": "2/10/2022, 16:21:03",
-    "name": "Perfume Chanchos",
-    "description": "Marca DPFA -75ml",
-    "price": 33,
-    "picture": "http://localhost:8082/Perfume_1.jpg",
-    "code": "AS321",
-    "stock": 11
+    "id": 2,
+    "timestamp": "1/11/2022, 18:21:03",
+    "name": "Perfume Two-One",
+    "description": "Marca Two - 90ml",
+    "price": 222,
+    "picture": "http://localhost:8082/Perfume_2.jpg",
+    "code": "AW001",
+    "stock": 22
 }
 
 ### GET ALL CARTS MONGODB & FB
@@ -137,10 +137,35 @@ GET http://localhost:8082/api/carritos/ HTTP/1.1
 Content-Type: application/json
 
 ### GET FB
-GET http://localhost:8082/api/carritos/AISTSZ4WYK20lKzvwAzy HTTP/1.1
+GET http://localhost:8082/api/carritos/f6E3FcV0BEdlp3cAWrxq HTTP/1.1
 Content-Type: application/json
 
-### DELETE   FIREBASE
-DELETE http://localhost:8082/api/carritos/AISTSZ4WYK20lKzvwAzy HTTP/1.1
+### GET BY ID MONGO 
+GET http://localhost:8082/api/carritos/636404254d6f29ff23f2bbca HTTP/1.1
+Content-Type: application/json
+
+### DELETE CART IN FIREBASE
+DELETE http://localhost:8082/api/carritos/dpnkqFXRrv1TPoIYvzlD HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+### DELETE CART IN MONGO
+DELETE http://localhost:8082/api/carritos/63640d8eebb49bc992bb4885 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+### DELETE ONE PRODUCT OF THE CART FIREBASE --- Not working
+DELETE http://localhost:8082/api/carritos/f6E3FcV0BEdlp3cAWrxq/productos/2 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+### EMPTY CART FIREBASE
+DELETE http://localhost:8082/api/carritos/oAMZlxN5e20zvJHcMvAc/productos HTTP/1.1
+Content-Type: application/json
+Authorization: Basic trusted:secret
+
+
+### EMPTY CART MONGO
+DELETE http://localhost:8082/api/carritos/636410c5020b43cb2d889844/productos HTTP/1.1
 Content-Type: application/json
 Authorization: Basic trusted:secret

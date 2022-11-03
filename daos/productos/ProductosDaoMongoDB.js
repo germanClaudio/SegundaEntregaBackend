@@ -52,7 +52,7 @@ class ProductosDaoMongoDB extends ContainerMongoDB {
         }
     }
 
-    async deleteProduct(id){
+    async emptyCart(id){
         try {
             const productDeleted = await Productos.deleteOne({ "_id": `${id}` })  //{name: 'Peter'}
             console.log('Producto eliminado: ' + JSON.stringify(productDeleted, null, 2))

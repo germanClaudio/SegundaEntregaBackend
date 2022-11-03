@@ -14,14 +14,18 @@ const { options } = require('../options/config')
 // const containerCart = new ContainerCarts('./DB/carritos.json')
 
 //FIREBASE
-const ContainerCarts = require('../daos/carritos/CartDaoFirebase.js')
-const containerCart = new ContainerCarts('carritos', options.firebase)
+// const ContainerCarts = require('../daos/carritos/CartDaoFirebase.js')
+// const containerCart = new ContainerCarts('carritos', options.firebase)
+
+//MONGO
+const ContainerCarts = require('../daos/carritos/CartDaoMongoDB.js')
+const containerCart = new ContainerCarts('carritos', options.mongoDB)
 
 //--------Router GET ALL CARTS ---------
 routerCart.get('/', async (req, res) => {
     try {
         const carritos = await containerCart.getAllCarts()
-        console.log('getAllCarts: '+ JSON.stringify(carritos, null, 2))
+        //console.log('getAllCarts: '+ JSON.stringify(carritos, null, 2))
         if (carritos !== {} ){
             res.status(200).json( { data: carritos } )
         } else {
@@ -60,7 +64,7 @@ routerCart.delete('/:id', (req, res) => {
     res.json(JSON.stringify(cartDeleted))
 })
 
-//--------Router GET CART BY T ID ---------
+//--------Router GET CART BY ID ---------
 routerCart.get('/:id_Cart', async (req, res) => {
     const id_Cart = req.params.id_Cart
     // console.log('--- params: ' + id_Cart)
@@ -69,7 +73,7 @@ routerCart.get('/:id_Cart', async (req, res) => {
         const getCart = await containerCart.getById(id_Cart)
         //console.log('--- params: ' + id_Cart)
         if (getCart !== null) {
-            // console.log('---- getCart: ' + JSON.stringify(getCart, null, 2));
+            // console.log('---- getCart: ', getCart.productos[0]);
             res.status(200).json( { ServerAnswer: getCart, id: id_Cart } )
         }
     } catch (error) {
@@ -78,21 +82,22 @@ routerCart.get('/:id_Cart', async (req, res) => {
 })
 
 //--------Router GET BY PRODUCT ID ---------
-routerCart.get('/:id_Cart/productos', (req, res) => {
-    const { id_Cart } = req.params
-    console.log('params: ' + JSON.stringify(id_Cart))
-    const getCart = containerCart.getCartById(id_Cart)
+// routerCart.get('/:id_Cart/productos', (req, res) => {
+//     const { id_Cart } = req.params
+//     //console.log('params: ' + JSON.stringify(id_Cart))
+//     const getCart = containerCart.getCartById(id_Cart)
 
-    if (id_Cart !== undefined) {
-        res.json({ Error: 'Upps! You do not have permissions to see this!' })
-    } else {
+//     if (id_Cart !== undefined) {
+//         res.json({ Error: 'Upps! You do not have permissions to see this!' })
+//     } else {
         
-        if (getCart.productos === undefined) {
-            res.json({ Error: `Sorry, we could not find the Product with the ID# ${id_Cart}!` })
-        }
-        res.json({ ServerAnswer: `Id Cart#: ${getCart.id_Cart} , Products: ${JSON.stringify(getCart.productos, null, 2)} ` })
-    }
-})
+//         if (getCart.productos === undefined) {
+//             res.json({ Error: `Sorry, we could not find the Product with the ID# ${id_Cart}!` })
+//         }
+//         res.json({ ServerAnswer: `Id Cart#: ${getCart.id_Cart} , Products: ${JSON.stringify(getCart.productos, null, 2)} ` })
+//     }
+// })
+
 
 //--------Router POST [ADD PRODUCTS TO CART] ---------
 routerCart.post('/:id_Cart/productos', async (req, res) => {
@@ -103,20 +108,38 @@ routerCart.post('/:id_Cart/productos', async (req, res) => {
 
     try {
         const dbresponse = await containerCart.updateCart(id_Cart, body, timestamp)
-        res.json({ ServerAnswer: `Id Cart#: ${id_Cart} - Product added: ${JSON.stringyfy(dbresponse, null, 2)}` })
+        res.status(200).json({ ServerAnswer: `Id Cart#: ${id_Cart} - Product added: ${JSON.stringyfy(dbresponse, null, 2)}` })
         
     } catch (error) {
         res.status(400).json({msg: `Error! The product was not added to the Cart Id# ${id_Cart}!!` })
     }
 })
 
-//--------Router DELETE PRODUCT IN CART BY ID PRODUCT ---------
+//--------Router DELETE ONE PRODUCT IN CART BY ID PRODUCT ---------
 routerCart.delete('/:id_Cart/productos/:id', (req, res) => {
     const { id_Cart, id } = req.params
-    let respuesta = containerCart.deleteCarttById(id_Cart, id)
+    const today = new Date()
+    const timestamp = today.toLocaleString('en-GB')
+    try {
+        let respuesta = containerCart.removeProductById(id_Cart, id, timestamp)
+        res.status(200).json({ ServerAnswer: JSON.stringify(respuesta) })
+    } catch (error) {
+        res.status(400).json({msg: `Error! The product was not deleted from the Cart Id# ${id_Cart}!!` })
+    }
     
-    res.json(JSON.stringify(respuesta))
 })
 
+//--------Router EMPTY CART BY ID CART ---------
+routerCart.delete('/:id_Cart/productos', (req, res) => {
+    const { id_Cart } = req.params
+    const today = new Date()
+    const timestamp = today.toLocaleString('en-GB')
+    try {
+        let respuesta = containerCart.emptyCart(id_Cart, timestamp)
+        res.status(200).json({ ServerAnswer: JSON.stringify(respuesta) })
+    } catch (error) {
+        res.status(400).json({msg: `Error! The Cart Id# ${id_Cart} was not emptied!!` })
+    }
+})
 
 module.exports = routerCart;
